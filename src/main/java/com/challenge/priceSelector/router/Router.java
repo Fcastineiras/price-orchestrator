@@ -1,4 +1,5 @@
 package com.challenge.priceSelector.router;
 
-public class Router {
+public enum Router {
+
 }
