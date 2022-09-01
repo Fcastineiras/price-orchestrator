@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class PriceRepository {
 
-  @Autowired
-  public JdbcTemplate jdbcTemplate;
+  //@Autowired
+  //public JdbcTemplate jdbcTemplate;
 
   public String getPriceByDate() {
 
