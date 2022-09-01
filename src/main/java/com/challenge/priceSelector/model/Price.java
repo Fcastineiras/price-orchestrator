@@ -5,24 +5,34 @@ import java.time.LocalDateTime;
 
 public class Price {
 
-    public Price() {}
+    public Price() {
+    }
 
-    public Price(Integer brandId, Long productId, BigDecimal price, Integer priority, Currency currency, LocalDateTime startedDate, LocalDateTime endDate) {
+    public Price(Integer brandId,
+                 Long productId,
+                 Long priceList,
+                 BigDecimal price,
+                 Integer priority,
+                 Currency currency,
+                 LocalDateTime startDate,
+                 LocalDateTime endDate) {
         this.brandId = brandId;
         this.productId = productId;
+        this.priceList = priceList;
         this.price = price;
         this.priority = priority;
         this.currency = currency;
-        this.startedDate = startedDate;
+        this.startDate = startDate;
         this.endDate = endDate;
     }
 
     private Integer brandId;
     private Long productId;
+    private Long priceList;
     private BigDecimal price;
     private Integer priority;
     private Currency currency;
-    private LocalDateTime startedDate;
+    private LocalDateTime startDate;
     private LocalDateTime endDate;
 
     public Integer getBrandId() {
@@ -45,11 +55,15 @@ public class Price {
         return currency;
     }
 
-    public LocalDateTime getStartedDate() {
-        return startedDate;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
     public LocalDateTime getEndDate() {
         return endDate;
+    }
+
+    public Long getPriceList() {
+        return priceList;
     }
 }
