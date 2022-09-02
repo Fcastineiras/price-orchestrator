@@ -1,5 +1,6 @@
 package com.challenge.priceSelector.repository;
 
+import com.challenge.priceSelector.Utils.AdapterUtils;
 import com.challenge.priceSelector.Utils.Reader;
 import com.challenge.priceSelector.model.Price;
 import com.challenge.priceSelector.model.PriceCriteria;
@@ -15,9 +16,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.sql.Types;
 
+import static com.challenge.priceSelector.Utils.AdapterUtils.objectToJson;
 import static com.challenge.priceSelector.Utils.Reader.read;
 
 @Repository
@@ -35,11 +39,13 @@ public class PriceRepository {
 
             return jdbcTemplate.queryForObject(query, params.getKey(), params.getValue(), new PriceRowMapper());
         } catch (EmptyResultDataAccessException e) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Not found price by brand_id" + priceCriteria.getBrandId() +
+                            ", product id" + priceCriteria.getProductId() +
+                    "and date " + objectToJson(priceCriteria.getDate()));
         } catch (Exception e) {
             logger.error(e.getMessage());
-            //throws FileNotFoundException
-            return null;
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
