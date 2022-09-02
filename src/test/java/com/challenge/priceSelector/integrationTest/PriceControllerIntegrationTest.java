@@ -43,13 +43,17 @@ public class PriceControllerIntegrationTest {
     private JdbcTemplate jdbcTemplate;
 
     @BeforeEach
-    private void setUp() {
-        jdbcTemplate.execute(insertBrandsToTest);
-        jdbcTemplate.execute(insertProductsToTest);
+    private void setUp() throws IOException {
+        try {
+            jdbcTemplate.execute(read("scripts/insert_test_data.sql"));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw e;
+        }
     }
 
     @AfterEach
-    private void clean() {
+    private void clean() throws IOException {
         jdbcTemplate.execute("delete from price");
         jdbcTemplate.execute("delete from brand");
         try {
@@ -57,8 +61,9 @@ public class PriceControllerIntegrationTest {
             jdbcTemplate.execute(read("db/migration/V2__insert_brand_data.sql"));
             jdbcTemplate.execute(read("db/migration/V3__create_price_table.sql"));
             jdbcTemplate.execute(read("db/migration/V4__insert_price_data.sql"));
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
+            throw e;
         }
     }
 
@@ -97,9 +102,9 @@ public class PriceControllerIntegrationTest {
         final PriceToApplyReq req = new PriceToApplyReq(brandId, productId, stringToTime(date));
 
         mvc.perform(MockMvcRequestBuilders.get("/price/")
-                        .accept(MediaType.APPLICATION_JSON_VALUE)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectToJson(req)))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectToJson(req)))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -108,9 +113,9 @@ public class PriceControllerIntegrationTest {
     @MethodSource("badRequestCases")
     public void whenTryToGetPriceWithInvalidCriteriaBodyThenThrowBadRequest(String body) throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/price/")
-                        .accept(MediaType.APPLICATION_JSON_VALUE)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(body))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
@@ -181,19 +186,4 @@ public class PriceControllerIntegrationTest {
                         "}")
         );
     }
-
-    private final String insertBrandsToTest = "INSERT INTO public.brand (id, name) VALUES" +
-            "(2, 'tests brand')," +
-            "(3, 'tests brand 3')," +
-            "(4, 'tests brand 4'); ";
-
-    private final String insertProductsToTest = "INSERT INTO public.price (brand_id, price_list, " +
-            "product_id, priority, price, curr, start_date, end_date ) VALUES " +
-            "(1, 4, 35456, 1, 30.30, 'EUR', '2010-06-15 16:00:00', '2030-12-31 23:59:59')," +
-            "(1, 4, 35457, 1, 40.40, 'EUR', '2010-06-15 16:00:00', '2030-12-31 23:59:59')," +
-            "(2, 1, 35456, 1, 50.50, 'EUR', '2010-06-15 16:00:00', '2030-12-31 23:59:59')," +
-            "(3, 1, 222, 0, 60.60, 'EUR', '2022-01-15 16:00:00', '2022-01-15 16:00:02')," +
-            "(4, 2, 123, 0, 70.70, 'EUR', '2020-01-02 00:00:00', '2020-02-01 23:59:59')," +
-            "(4, 3, 123, 1, 80.80, 'EUR', '2015-01-01 16:00:00', '2025-12-31 23:59:59')," +
-            "(4, 3, 123, 2, 90.90, 'EUR', '2010-01-01 16:00:00', '2030-12-31 23:59:59');";
 }
