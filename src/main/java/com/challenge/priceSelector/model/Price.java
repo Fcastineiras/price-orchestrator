@@ -5,9 +5,6 @@ import java.time.LocalDateTime;
 
 public class Price {
 
-    public Price() {
-    }
-
     public Price(Integer brandId,
                  Long productId,
                  Long priceList,

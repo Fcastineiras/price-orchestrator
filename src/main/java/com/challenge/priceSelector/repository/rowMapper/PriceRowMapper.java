@@ -4,12 +4,10 @@ import com.challenge.priceSelector.model.Currency;
 import com.challenge.priceSelector.model.Price;
 import org.springframework.jdbc.core.RowMapper;
 
-
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import static com.challenge.priceSelector.Utils.AdapterUtils.stringToTime;
 
 public class PriceRowMapper implements RowMapper<Price> {
 
@@ -22,8 +20,8 @@ public class PriceRowMapper implements RowMapper<Price> {
                 rs.getBigDecimal("price"),
                 rs.getInt("priority"),
                 Currency.valueOf(rs.getString("curr")),
-                LocalDateTime.parse(rs.getString("start_date"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                LocalDateTime.parse(rs.getString("end_date"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                stringToTime(rs.getString("start_date")),
+                stringToTime(rs.getString("end_date"))
         );
     }
 }

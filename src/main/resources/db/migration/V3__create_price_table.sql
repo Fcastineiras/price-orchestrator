@@ -1,4 +1,4 @@
-CREATE TABLE public.price
+CREATE TABLE IF NOT EXISTS public.price
 (
   brand_id INT NOT NULL,
   priority INT NOT NULL,
