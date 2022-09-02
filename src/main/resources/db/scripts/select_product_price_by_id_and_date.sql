@@ -1,4 +1,7 @@
 select * from price
-where start_date >= ? <= end_date
+where brand_id = ?
+and product_id = ?
+and start_date <= ?
+and ? <= end_date
 order by priority
 limit 1;
