@@ -19,9 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.io.IOException;
 
 import static com.challenge.priceSelector.Utils.AdapterUtils.objectToJson;
-import static com.challenge.priceSelector.Utils.AdapterUtils.stringToTime;
 import static com.challenge.priceSelector.Utils.Reader.read;
-import static java.time.LocalDateTime.parse;
 
 @SpringBootTest
 @AutoConfigureMockMvc

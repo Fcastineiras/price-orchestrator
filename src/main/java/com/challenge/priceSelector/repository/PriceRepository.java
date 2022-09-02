@@ -16,10 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Types;
-import java.util.Map;
 
 import static com.challenge.priceSelector.Utils.Reader.read;
 
