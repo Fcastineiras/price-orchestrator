@@ -1,21 +1,13 @@
-package com.challenge.priceSelector.integrationTest;
+package com.challenge.priceSelector.integrationTest.price;
 
 import com.challenge.priceSelector.dto.request.PriceToApplyReq;
 import com.challenge.priceSelector.dto.response.PriceToApplyRes;
-import org.junit.jupiter.api.AfterEach;
+import com.challenge.priceSelector.integrationTest.BaseIntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -29,38 +21,12 @@ import static com.challenge.priceSelector.Utils.Reader.read;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class PriceControllerIntegrationTest {
-
-    private Logger logger = LoggerFactory.getLogger(PriceControllerIntegrationTest.class);
-
-    @Autowired
-    private MockMvc mvc;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+public class PriceControllerIntegrationTest extends BaseIntegrationTest {
 
     @BeforeEach
     private void setUp() throws IOException {
         try {
             jdbcTemplate.execute(read("scripts/insert_test_data.sql"));
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw e;
-        }
-    }
-
-    @AfterEach
-    private void clean() throws IOException {
-        jdbcTemplate.execute("delete from price");
-        jdbcTemplate.execute("delete from brand");
-        try {
-            jdbcTemplate.execute(read("db/migration/V1__create_band_table.sql"));
-            jdbcTemplate.execute(read("db/migration/V2__insert_brand_data.sql"));
-            jdbcTemplate.execute(read("db/migration/V3__create_price_table.sql"));
-            jdbcTemplate.execute(read("db/migration/V4__insert_price_data.sql"));
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw e;

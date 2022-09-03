@@ -1,4 +1,4 @@
-package com.challenge.priceSelector.integrationTest;
+package com.challenge.priceSelector.price;
 
 import com.challenge.priceSelector.dto.request.PriceToApplyReq;
 import com.challenge.priceSelector.model.PriceCriteria;
