@@ -16,25 +16,22 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BaseIntegrationTest {
 
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+  protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    protected Flyway flyway;
+  @Autowired protected Flyway flyway;
 
-    @Autowired
-    protected MockMvc mvc;
+  @Autowired protected MockMvc mvc;
 
-    @Autowired
-    protected JdbcTemplate jdbcTemplate;
+  @Autowired protected JdbcTemplate jdbcTemplate;
 
-    @AfterEach
-    protected void clean() {
-        try {
-            flyway.clean();
-            flyway.migrate();
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw e;
-        }
+  @AfterEach
+  protected void clean() {
+    try {
+      flyway.clean();
+      flyway.migrate();
+    } catch (Exception e) {
+      logger.error(e.getMessage());
+      throw e;
     }
+  }
 }

@@ -10,11 +10,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PriceService {
 
-    @Autowired
-    private PriceRepository priceRepository;
+  @Autowired private PriceRepository priceRepository;
 
-    public Price getPriceToApplyByCriteria(PriceToApplyReq priceToApplyReq) {
-        return priceRepository.getPriceToApplyByCriteria(new PriceCriteria(priceToApplyReq));
-    }
-
+  public Price getPriceToApplyByCriteria(PriceToApplyReq priceToApplyReq) {
+    return priceRepository.getPriceToApplyByCriteria(new PriceCriteria(priceToApplyReq));
+  }
 }
